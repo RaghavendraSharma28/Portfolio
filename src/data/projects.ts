@@ -1,0 +1,9 @@
+export type Project = { slug: string; title: string; eyebrow: string; description: string; category: string; tags: string[]; kind: 'ocr' | 'fpga' | 'embedded' | 'robotics' | 'software'; featured?: boolean };
+export const projects: Project[] = [
+  { slug: 'vehicle-identification-ocr', title: 'Vehicle Identification OCR', eyebrow: 'A.W. ROSTAMANI · INTERNSHIP', description: 'Evaluating ways to extract vehicle identification numbers from document images with OCR and vision-language models.', category: 'Computer Vision', tags: ['Python', 'PaddleOCR', 'Qwen2.5-VL-3B'], kind: 'ocr', featured: true },
+  { slug: 'fpga-digital-systems', title: 'FPGA Digital Systems', eyebrow: 'DIGITAL DESIGN', description: 'RTL design and simulation across combinational logic, sequential systems, datapaths, and controllers.', category: 'FPGA & Digital Design', tags: ['Verilog', 'Quartus Prime', 'Questa'], kind: 'fpga' },
+  { slug: 'embedded-systems', title: 'Embedded Systems', eyebrow: 'ACADEMIC PROJECTS', description: 'Microcontroller applications exploring peripherals, event-driven firmware, and hardware/software integration.', category: 'Embedded Systems', tags: ['C', 'MSP432', 'DriverLib'], kind: 'embedded' },
+  { slug: 'robotics-mechatronics', title: 'Robotics & Mechatronics', eyebrow: 'ROBOTICS', description: 'Robotics team experience and a keypad-controlled servo lock prototype built around analog input and actuation.', category: 'Robotics', tags: ['Arduino', 'C++', 'Servo'], kind: 'robotics' },
+  { slug: 'cpp-ai-workspace', title: 'C++ AI Workspace', eyebrow: 'SOFTWARE SYSTEMS', description: 'A modular document-processing concept for text tokenization, chunking, and organized workspace management.', category: 'Software Engineering', tags: ['C++', 'CMake', 'Testing'], kind: 'software' },
+];
+export const getProject = (slug: string) => projects.find(project => project.slug === slug);
