@@ -29,9 +29,9 @@ Create a production build with `npm run build`; preview it locally with `npm run
 
 ## Update your details
 
-Edit `src/data/profile.ts` to add a verified email, GitHub URL, LinkedIn URL, or change the resume path. Unconfigured contact links are hidden. Add your PDF as `public/resume.pdf`; until then the site shows “Coming soon.” Do not add unapproved internship materials or customer information.
+Edit `src/data/profile.ts` to add a verified email, GitHub URL, LinkedIn URL, or change the resume path. Unconfigured contact links are hidden. The current resume is served from `public/resume.pdf`. Do not add unapproved internship materials or customer information.
 
-Project descriptions and card tags live in `src/data/projects.ts`; case study sections are in `src/pages/Pages.tsx`. Project preview artwork is drawn locally with CSS in `src/styles.css`. The About photo area is an intentional placeholder; replace that element with an approved professional photo when available.
+Project descriptions and card tags live in `src/data/projects.ts`; case study content is in `src/data/caseStudies.ts` and individual page components. Project preview artwork is drawn locally with CSS in `src/styles.css`. The About photo area is an intentional placeholder; replace that element with an approved professional photo when available.
 
 ## Deployment
 

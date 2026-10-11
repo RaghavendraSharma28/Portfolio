@@ -6,7 +6,7 @@ export const profile = {
   university: 'Virginia Tech',
   graduationYear: '2028',
   email: '', // Add a verified email address
-  github: '', // Add your GitHub profile URL
+  github: 'https://github.com/RaghavendraSharma28',
   linkedin: '', // Add your LinkedIn profile URL
   resumePath: '/resume.pdf',
 };
