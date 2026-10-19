@@ -16,6 +16,24 @@ export function ProjectVisual({ kind, compact = false }: { kind: Project['kind']
 
 export function Pipeline({ items }: { items: string[] }) { return <div className="pipeline" aria-label={items.join(' then ')}>{items.map((item, index) => <div className="pipeline-step" key={item}><span>{String(index + 1).padStart(2, '0')}</span><b>{item}</b>{index < items.length - 1 && <i aria-hidden="true">→</i>}</div>)}</div>; }
 
+export function OcrProductionArchitecture() {
+  const stages = [
+    ['01', 'Mulkiya image', 'Registration-card image enters the local pipeline'],
+    ['02', 'RapidOCR', 'Text is extracted locally'],
+    ['03', 'Candidate generation', 'VIN-like strings are collected from OCR output'],
+    ['04', 'Normalize & validate', '17 characters and allowed VIN characters'],
+    ['05', 'VIN-specific correction', 'Edit distance, weighted confusions, known candidates'],
+    ['06', 'Prediction & reports', 'Exact evaluation, CSV output, and debugging reports'],
+  ];
+  return <figure className="ocr-architecture" aria-labelledby="ocr-architecture-caption">
+    <div className="ocr-architecture-grid">{stages.map(([number, title, note], index) => <div className="ocr-architecture-step" key={number}>
+      <span>{number}</span><strong>{title}</strong><small>{note}</small>{index < stages.length - 1 && <i aria-hidden="true">→</i>}
+    </div>)}</div>
+    <div className="ocr-human-review"><b>Suspicious or uncertain candidates</b><span>Flagged for human review instead of being accepted automatically</span></div>
+    <figcaption id="ocr-architecture-caption">Production architecture summarized from the documented project. OCR and validation run locally; this diagram does not expose company documents or real VINs.</figcaption>
+  </figure>;
+}
+
 export function FpgaArchitectureDiagram() {
   return <figure className="fpga-architecture" aria-labelledby="fpga-architecture-caption">
     <div className="arch-lane arch-main-flow">

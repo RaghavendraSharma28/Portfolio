@@ -23,7 +23,7 @@ The production output is `dist/`. React Router routes are configured with the Ve
 
 - `/` — Featured projects, experience summary, technical disciplines, contact links, and resume download
 - `/projects` — Project index with status labels
-- `/projects/vehicle-identification-ocr` — A.W. Rostamani internship case study and initial PaddleOCR baseline
+- `/projects/vehicle-identification-ocr` — A.W. Rostamani UAE Mulkiya VIN extraction case study, final RapidOCR production benchmark, and clearly separated initial PaddleOCR baseline
 - `/projects/fpga-digital-systems` — Source-aligned FSM, datapath, and sequential multiplier case study
 - `/projects/embedded-systems` — MSP432 coursework collection
 - `/projects/cpp-ai-workspace` — C++ project architecture concept
@@ -68,4 +68,4 @@ The FPGA case study also contains a source-aligned architecture diagram and RTL-
 
 ## Content and verification notes
 
-The internship figures shown are the initial PaddleOCR baseline: 147 images, 22 exact matches, and 14.97% exact-match accuracy. Qwen2.5-VL-3B is described as an explored alternative without a comparable accuracy claim. The Verilog testbench includes self-checking scenarios, but a complete simulation run has not been independently confirmed. No simulation pass, clock rate, synthesis result, FPGA resource count, or final internship improvement is claimed.
+The internship case study distinguishes 99.09% (109/110) on a cleaned production benchmark from the 14.97% initial PaddleOCR baseline (22/147); these are different evaluation contexts, not a controlled same-set comparison. The 935-image labelled dataset and its 748/93/94 train/validation/test split are separate from both. EasyOCR's approximately 15% result is a separate early experiment. Qwen2.5-VL-3B, SmolVLM2, BLIP, and hybrid routing are documented as experiments, not production engines. No private Mulkiya images or VINs are included. The Verilog testbench includes self-checking scenarios, but a complete simulation run has not been independently confirmed. No simulation pass, clock rate, synthesis result, or FPGA resource count is claimed.

@@ -83,15 +83,55 @@ export function MultiplierWalkthrough() {
   </details>;
 }
 
-export function OcrBaselineChart({ facts }: { facts: NonNullable<Project['verifiedResults']> }) {
-  const matchCount = Number(facts.find(fact => fact.label === 'Exact VIN matches')?.value ?? 0);
-  const imageCount = Number(facts.find(fact => fact.label === 'Images evaluated')?.value ?? 0);
-  const percentage = imageCount ? matchCount / imageCount * 100 : 0;
-  return <div className="baseline-chart">
-    <div className="baseline-chart-top"><span>Initial exact-string baseline</span><strong>{matchCount} / {imageCount}</strong></div>
-    <div className="baseline-track" role="img" aria-label={`${matchCount} exact matches from ${imageCount} images, ${percentage.toFixed(2)} percent`}><span style={{ width: `${percentage}%` }}/></div>
-    <div className="baseline-chart-foot"><span>{percentage.toFixed(2)}% exact matches</span><span>{imageCount - matchCount} without an exact match</span></div>
+type OcrFacts = NonNullable<Project['verifiedResults']>;
+const factValue = (facts: OcrFacts, label: string) => facts.find(fact => fact.label === label);
+
+export function OcrProductionResult({ facts }: { facts: OcrFacts }) {
+  const accuracy = factValue(facts, 'Production benchmark accuracy')?.value ?? '—';
+  const matches = factValue(facts, 'Production benchmark matches')?.value ?? '—';
+  const benchmarkNote = factValue(facts, 'Production benchmark accuracy')?.note ?? '';
+  return <section className="ocr-production-result" aria-label="Production benchmark result">
+    <div><span className="eyebrow">DOCUMENTED PRODUCTION BENCHMARK · RAPIDOCR PIPELINE</span><strong>{accuracy}</strong><p>Chassis-number exact-match accuracy on a cleaned 110-image benchmark.</p></div>
+    <div className="ocr-result-count"><strong>{matches}</strong><span>exact predictions</span><small>{benchmarkNote}</small></div>
+  </section>;
+}
+
+export function OcrBenchmarkComparison({ facts }: { facts: OcrFacts }) {
+  const production = factValue(facts, 'Production benchmark accuracy');
+  const productionMatches = factValue(facts, 'Production benchmark matches')?.value ?? '';
+  const baseline = factValue(facts, 'Initial PaddleOCR baseline');
+  const productionPercent = Number.parseFloat(production?.value ?? '0');
+  const baselinePercent = Number.parseFloat(baseline?.value ?? '0');
+  return <div className="ocr-benchmark-comparison">
+    <article className="benchmark-card benchmark-production"><span className="approach-label">FINAL DOCUMENTED PRODUCTION RESULT</span><h3>RapidOCR pipeline</h3><strong>{production?.value}</strong><p>{productionMatches} exact chassis-number predictions</p><div className="benchmark-track" role="img" aria-label={`${production?.value} exact predictions on the cleaned benchmark`}><i style={{ width: `${productionPercent}%` }}/></div><small>{production?.note}</small></article>
+    <article className="benchmark-card benchmark-baseline"><span className="approach-label">INITIAL PADDLEOCR BASELINE</span><h3>PaddleOCR</h3><strong>{baseline?.value}</strong><p>Exact VIN matches</p><div className="benchmark-track" role="img" aria-label={`${baseline?.value} exact matches on the initial PaddleOCR evaluation`}><i style={{ width: `${baselinePercent}%` }}/></div><small>{baseline?.note}</small></article>
+    <p className="benchmark-context">These results come from different evaluation contexts. The values are shown side by side for context, not as a controlled same-dataset comparison or a measured percentage-point improvement. The 935-image labelled training dataset and its 94-image test split are separate again.</p>
   </div>;
+}
+
+const ocrExperiments = [
+  { name: 'RapidOCR', tag: 'SELECTED FOR PRODUCTION', result: 'Production system', text: 'Local OCR paired with candidate generation, VIN-specific validation and conservative correction. Suspicious candidates are flagged for review.' },
+  { name: 'Qwen2.5-VL-3B-Instruct', tag: 'EXPERIMENTAL', result: 'No comparable accuracy reported', text: 'Inference, structured-output prompts, JSON parsing, and fine-tuning experiments were implemented. GPU training was unstable in the Windows RTX 4050 environment.' },
+  { name: 'SmolVLM2', tag: 'EXPLORATORY', result: 'Not selected for production', text: 'CPU training could run, while GPU execution was unstable in the available environment.' },
+  { name: 'BLIP', tag: 'NEGATIVE EXPERIMENTAL RESULT', result: '0% valid JSON in the observed evaluation', text: 'CPU fine-tuning completed, but responses were caption-like and hallucinated instead of following strict structured document extraction.' },
+  { name: 'Hybrid OCR + VLM', tag: 'CONSERVATIVE MODE', result: 'RapidOCR remains primary', text: 'Early routing sometimes invoked Qwen unnecessarily, increased runtime, and could override a correct OCR prediction. VLM fallback remains a future experiment.' },
+];
+
+export function OcrExperimentCards() {
+  return <div className="ocr-experiment-grid">{ocrExperiments.map(item => <article className="ocr-experiment-card" key={item.name}><span className="approach-label">{item.tag}</span><h3>{item.name}</h3><strong>{item.result}</strong><p>{item.text}</p></article>)}</div>;
+}
+
+export function OcrDatasetFacts({ facts }: { facts: OcrFacts }) {
+  const dataset = factValue(facts, 'Clean labelled dataset');
+  const split = factValue(facts, 'Documented data split');
+  const easyOcr = factValue(facts, 'Separate EasyOCR experiment');
+  return <div className="ocr-dataset-strip"><div><strong>{dataset?.value}</strong><span>{dataset?.note}</span></div><div><strong>{split?.value}</strong><span>{split?.note}</span></div><div><strong>{easyOcr?.value}</strong><span>{easyOcr?.note}</span></div></div>;
+}
+
+const futureWork = ['Expand the labelled dataset', 'Run document-focused VLM experiments on stable Linux GPU infrastructure', 'Evaluate image augmentation', 'Improve human review tooling', 'Develop a production API', 'Add automated regression tests'];
+
+export function OcrFutureWork() {
+  return <ul className="ocr-future-list">{futureWork.map((item, index) => <li key={item}><span>0{index + 1}</span>{item}</li>)}</ul>;
 }
 
 export function SyntheticCharacterExample() {

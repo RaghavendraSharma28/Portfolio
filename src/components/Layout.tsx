@@ -26,7 +26,7 @@ export function Layout() {
       '/about': [`About | ${profile.name}`, 'Meet Raghav Sharma, a Virginia Tech Computer Engineering student interested in hardware and software integration.'],
     };
     const [title, description] = project
-      ? [`${slug === 'vehicle-identification-ocr' ? 'Automated Vehicle Identification Using Computer Vision' : project.title} | ${profile.name}`, project.description]
+      ? [`${slug === 'vehicle-identification-ocr' ? 'UAE Mulkiya VIN Extraction System' : project.title} | ${profile.name}`, project.description]
       : pages[path] ?? (path.startsWith('/projects/')
         ? [`Project not found | ${profile.name}`, 'The requested project page could not be found. Browse the available engineering case studies.']
         : [`Page not found | ${profile.name}`, 'The requested page could not be found. Return to the portfolio home page or browse the projects.']);

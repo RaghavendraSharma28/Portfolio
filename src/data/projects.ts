@@ -10,6 +10,7 @@ export type VerifiedFact = {
   label: string;
   value: string;
   note?: string;
+  highlight?: boolean;
 };
 
 export type Project = {
@@ -33,18 +34,21 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'vehicle-identification-ocr',
-    title: 'Vehicle Identification OCR',
+    title: 'UAE Mulkiya VIN Extraction System',
     eyebrow: 'A.W. ROSTAMANI · INTERNSHIP',
-    description: 'Evaluating ways to extract vehicle identification numbers from document images with OCR and vision-language models.',
+    description: 'A local OCR pipeline for UAE Mulkiya cards, combining candidate generation, VIN-specific validation, and conservative review.',
     category: 'Computer Vision',
-    tags: ['Python', 'PaddleOCR', 'Qwen2.5-VL-3B'],
+    tags: ['Python', 'RapidOCR', 'VIN validation'],
     kind: 'ocr',
     status: 'Professional case study',
     featured: true,
     verifiedResults: [
-      { label: 'Images evaluated', value: '147', note: 'Initial PaddleOCR baseline' },
-      { label: 'Exact VIN matches', value: '22', note: 'Exact-string comparison' },
-      { label: 'Initial exact-match rate', value: '14.97%', note: 'Not the final internship result' },
+      { label: 'Production benchmark accuracy', value: '99.09%', note: 'RapidOCR pipeline · cleaned 110-image benchmark', highlight: true },
+      { label: 'Production benchmark matches', value: '109 / 110', note: 'Exact chassis-number matches' },
+      { label: 'Initial PaddleOCR baseline', value: '14.97%', note: '22 / 147 exact matches · different evaluation context', highlight: true },
+      { label: 'Separate EasyOCR experiment', value: '~15%', note: 'Early result documented in the internship report' },
+      { label: 'Clean labelled dataset', value: '935 images', note: 'Prepared for supervised model experimentation' },
+      { label: 'Documented data split', value: '748 / 93 / 94', note: 'Training / validation / test; not the 110-image benchmark' },
     ],
   },
   {
