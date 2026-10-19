@@ -14,7 +14,11 @@ export function About() {
   return <>
     <section className="page-hero about-hero page-wrap"><div className="eyebrow section-kicker">ABOUT / RAGHAV SHARMA</div><h1>When software<br/>becomes <em>physical.</em></h1><p>I've always been fascinated by the moment software becomes something physical — when a few lines of code control a motor, process a signal, or bring a digital system to life.</p></section>
     <section className="about-story"><div className="page-wrap about-story-grid">
-      <div className="portrait-placeholder" role="img" aria-label="Professional photo placeholder"><div className="portrait-initials">RS</div><span>PHOTO PLACEHOLDER</span><small>Replace with a professional photo</small></div>
+      <div className="portrait-art" role="img" aria-label="Initials RS graphic for Raghav Sharma">
+        <div className="portrait-art-grid"/><span className="portrait-orbit orbit-a"/><span className="portrait-orbit orbit-b"/>
+        <div className="portrait-monogram"><span>R</span><span>S</span></div>
+        <div className="portrait-art-footer"><span>RAGHAV SHARMA</span><span>COMPUTER ENGINEERING · VT</span></div>
+      </div>
       <div className="story-copy"><div className="eyebrow section-kicker">A CONNECTED DISCIPLINE</div><h2>Hardware gives software a world to act in.</h2><p>Robotics first made the connection between code and physical systems compelling to me. Studying Computer Engineering at Virginia Tech has given me ways to explore that connection through embedded systems, digital logic, and applied AI.</p><p>I’m drawn to challenging, hands-on problems where careful thinking has to meet real constraints: a signal, a peripheral, an image, or a system that needs to work beyond the screen.</p><p>My interests continue to grow across robotics, computing, and the engineering choices that bring electronics and software together.</p></div>
     </div></section>
     <section className="education-section"><div className="page-wrap education-grid">

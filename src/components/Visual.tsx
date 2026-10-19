@@ -16,20 +16,26 @@ export function ProjectVisual({ kind, compact = false }: { kind: Project['kind']
 
 export function Pipeline({ items }: { items: string[] }) { return <div className="pipeline" aria-label={items.join(' then ')}>{items.map((item, index) => <div className="pipeline-step" key={item}><span>{String(index + 1).padStart(2, '0')}</span><b>{item}</b>{index < items.length - 1 && <i aria-hidden="true">→</i>}</div>)}</div>; }
 
-export function MultiplierDiagram() {
-  return <figure className="multiplier-diagram" aria-labelledby="multiplier-caption">
-    <div className="fpga-controls"><span>Debounced Enter pulse</span><ArrowDown/></div>
-    <div className="fpga-flow">
-      <div className="fpga-block fpga-input"><b>Inputs</b><span>opcode · A[7:0] · B[7:0]</span></div>
-      <ArrowRight className="fpga-arrow" aria-hidden="true"/>
-      <div className="fpga-block fpga-datapath"><b>Datapath registers</b><span>opcode · operand A · operand B</span></div>
-      <ArrowRight className="fpga-arrow" aria-hidden="true"/>
-      <div className="fpga-block fpga-result"><b>Result / display</b><span>16-bit result · HEX · LEDs</span></div>
+export function FpgaArchitectureDiagram() {
+  return <figure className="fpga-architecture" aria-labelledby="fpga-architecture-caption">
+    <div className="arch-lane arch-main-flow">
+      <div className="arch-node arch-input"><span>USER INPUT</span><b>Switches & buttons</b><small>SW[7:0] · KEY[1:0]</small></div>
+      <div className="arch-connector"><span>SW bus</span><ArrowRight aria-hidden="true"/></div>
+      <div className="arch-node arch-datapath"><span>REGISTERED DATAPATH</span><b>Opcode · A · B</b><small>Three load-controlled registers</small></div>
+      <div className="arch-connector"><span>14 operations</span><ArrowRight aria-hidden="true"/></div>
+      <div className="arch-node arch-output"><span>RESULT PATH</span><b>Result register & display mux</b><small>HEX3–HEX0 · 16-bit value</small></div>
     </div>
-    <div className="fpga-lower-flow">
-      <div className="fpga-block fpga-mul"><b>Sequential multiplier</b><span>8-bit multiplicand register</span><span>17-bit product register</span><small>if product[0]: add · then shift right</small></div>
-      <div className="fpga-block fpga-controller"><b>14-state Moore FSM</b><span>load · execute · mul_step</span><small>8 manual multiply steps</small></div>
+    <div className="arch-control-row">
+      <div className="arch-node arch-keypress"><span>KEY EVENT</span><b>Debouncer</b><small>Press/release → one-cycle Enter pulse</small></div>
+      <div className="arch-connector"><span>Enter</span><ArrowRight aria-hidden="true"/></div>
+      <div className="arch-node arch-controller"><span>MOORE CONTROLLER</span><b>14-state FSM</b><small>load_op · load_A · load_B · result_load</small></div>
+      <div className="arch-connector"><span>mul_load · mul_step</span><ArrowRight aria-hidden="true"/></div>
+      <div className="arch-node arch-multiplier"><span>SEQUENTIAL MULTIPLIER</span><b>8 × 8 unsigned shift-and-add</b><small>8 steps · 17-bit product register</small></div>
     </div>
-    <figcaption id="multiplier-caption">The FSM controls register loads and multiplier steps; the multiplier exposes its lower 16 bits to the result/display path.</figcaption>
+    <div className="arch-feedback">
+      <div className="arch-feedback-label"><ArrowDown aria-hidden="true"/><span>Operand A/B registers feed multiplier; its lower 16 product bits feed the display/result path during multiply.</span></div>
+      <div className="arch-debug"><b>Debug output</b><span>HEX5–HEX4 show A · LED[7:0] show B</span></div>
+    </div>
+    <figcaption id="fpga-architecture-caption">Module roles and signals follow the repository RTL. The diagram describes data/control flow; it is not a timing waveform or a synthesis report.</figcaption>
   </figure>;
 }

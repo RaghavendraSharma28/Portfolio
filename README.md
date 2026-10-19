@@ -1,44 +1,71 @@
-# Raghav Sharma Portfolio
+# Raghav Sharma Engineering Portfolio
 
-A responsive personal engineering portfolio for Raghav Sharma, a Virginia Tech Computer Engineering student. The site presents five project case studies, internship experience, education, and technical interests.
+A responsive React and TypeScript portfolio focused on embedded systems, FPGA and digital design, robotics, computer vision, and software engineering. It includes five project case studies, professional and student-team experience, an About page, theme switching, and a downloadable resume.
 
-## Technology
-
-React, TypeScript, Vite, Tailwind CSS, Framer Motion, Lucide React, and React Router.
-
-## Run locally
+## Run and verify locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Create a production build with `npm run build`; preview it locally with `npm run preview`. `npm run typecheck` checks the TypeScript project.
+Before deployment, run:
+
+```bash
+npm run typecheck
+npm run build
+npm run preview
+```
+
+The production output is `dist/`. React Router routes are configured with the Vercel rewrite in `vercel.json` so nested project URLs can be refreshed directly.
 
 ## Pages
 
-- `/` — Home, featured work, experience summary, engineering disciplines, and contact/resume state
-- `/projects` — Project index
-- `/projects/vehicle-identification-ocr` — Internship case study
-- `/projects/fpga-digital-systems` — FPGA and digital logic
-- `/projects/embedded-systems` — Embedded systems
-- `/projects/robotics-mechatronics` — Robotics and mechatronics
-- `/projects/cpp-ai-workspace` — C++ software project
-- `/experience` — Professional and student team experience
-- `/about` — Personal introduction, education, interests, and skills
+- `/` — Featured projects, experience summary, technical disciplines, contact links, and resume download
+- `/projects` — Project index with status labels
+- `/projects/vehicle-identification-ocr` — A.W. Rostamani internship case study and initial PaddleOCR baseline
+- `/projects/fpga-digital-systems` — Source-aligned FSM, datapath, and sequential multiplier case study
+- `/projects/embedded-systems` — MSP432 coursework collection
+- `/projects/cpp-ai-workspace` — C++ project architecture concept
+- `/projects/robotics-mechatronics` — Robotics experience and academic prototype
+- `/experience` — Internship and student-team experience
+- `/about` — Introduction, education, interests, and toolkit
 
-## Update your details
+## Add a project
 
-Edit `src/data/profile.ts` to add a verified email, GitHub URL, LinkedIn URL, or change the resume path. Unconfigured contact links are hidden. The current resume is served from `public/resume.pdf`. Do not add unapproved internship materials or customer information.
+1. Add a project object to `src/data/projects.ts`. Each project has a unique `slug`, title, description, category, tags, and a `kind` used by its artwork. `status` distinguishes an internship case study, RTL implementation, academic collection, prototype, or concept. Set `featured: true` to feature it on the homepage.
+2. Add its written case study to `src/data/caseStudies.ts` using the same slug. Include specific claims only when supported by the source code, project records, or verified results.
+3. If the project needs a new kind of preview artwork, add it to `ProjectKind` and `ProjectVisual` in `src/data/projects.ts` and `src/components/Visual.tsx`.
 
-Project descriptions and card tags live in `src/data/projects.ts`; case study content is in `src/data/caseStudies.ts` and individual page components. Project preview artwork is drawn locally with CSS in `src/styles.css`. The About photo area is an intentional placeholder; replace that element with an approved professional photo when available.
+Optional project fields are shown only when present:
 
-## Deployment
+- `repositoryUrl` and optional `repositoryLabel` for a source link
+- `screenshots` with `src`, descriptive `alt`, and optional `caption`
+- `videoDemoUrl` for a demonstration link
+- `technicalDocumentationUrl` for project documentation
+- `verifiedResults` for source-checked facts or measured results, with any necessary context in `note`
+- `status` and `featured` for project classification and placement
 
-Import this repository into Vercel, keep the default Vite build command (`npm run build`) and output directory (`dist`), then deploy. Client-side project routes need a rewrite to `index.html` if the hosting platform does not automatically provide SPA fallback routing.
+### Add screenshots or replace preview artwork
 
-After choosing the production domain, set canonical/Open Graph URLs and add a sitemap using that verified domain. No domain is assumed in this source tree.
+Put approved, non-confidential images under `public/projects/<project-slug>/`. Reference them with a root-relative URL such as `/projects/<project-slug>/board.jpg` in the project's `screenshots` array. The first screenshot replaces the artwork in its project card; all provided images appear in a captioned case-study gallery. Write useful alt text and do not include private documents or customer data.
 
-## Notes
+The FPGA case study also contains a source-aligned architecture diagram and RTL-derived examples. Add real simulator captures or waveform screenshots through the same `screenshots` field only after they have been captured from an actual run; do not present illustrative diagrams as test output.
 
-OCR figures are labeled as the initial PaddleOCR baseline (147 images, 22 exact matches, 14.97%). Technical flow diagrams and failure examples are conceptual/illustrative. No final internship accuracy, confidential materials, awards, or unverified performance figures are claimed.
+## Update your profile and resume
+
+- Edit `src/data/profile.ts` to update your display name, graduation year, or verified contact URLs. Email and LinkedIn are blank by default; empty values are hidden.
+- Keep `github` pointed at the profile you want visitors to see. It appears in the main navigation and footer.
+- Replace `public/resume.pdf` with the current PDF. `resumePath` in `src/data/profile.ts` controls the download URL. Confirm the updated file opens before publishing.
+
+## Deploy to Vercel
+
+1. Import the repository into Vercel or select its existing Vercel project.
+2. Use the Vite build command `npm run build` and output directory `dist`.
+3. Keep `vercel.json`; it provides the SPA rewrite for nested routes.
+4. Deploy a preview and check the homepage, project routes, resume download, and mobile navigation. Then promote it using the Vercel project workflow.
+5. Add canonical metadata or a sitemap only after choosing and verifying the production domain. No domain is assumed in this repository.
+
+## Content and verification notes
+
+The internship figures shown are the initial PaddleOCR baseline: 147 images, 22 exact matches, and 14.97% exact-match accuracy. Qwen2.5-VL-3B is described as an explored alternative without a comparable accuracy claim. The Verilog testbench includes self-checking scenarios, but a complete simulation run has not been independently confirmed. No simulation pass, clock rate, synthesis result, FPGA resource count, or final internship improvement is claimed.

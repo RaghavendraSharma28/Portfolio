@@ -18,12 +18,12 @@ export function Experience() {
           </div>
         </article>
         <article className="timeline-item student-item">
-          <div className="timeline-date">STUDENT TEAM</div><div className="timeline-mark"><span/></div>
-          <div className="timeline-copy"><div className="eyebrow section-kicker">STUDENT DESIGN TEAM</div><h2>Hybrid Electric Vehicle Team</h2><h3>Virginia Tech</h3><p>Student engineering team experience. Specific responsibilities and project details can be added as they are confirmed.</p></div>
+          <div className="timeline-date">SEP 2025<br/>— PRESENT</div><div className="timeline-mark"><span/></div>
+          <div className="timeline-copy"><div className="eyebrow section-kicker">STUDENT DESIGN TEAM</div><h2>Hybrid Electric Vehicle Team</h2><h3>Electrical / Integration Team Member · Virginia Tech</h3><p>Contribute to the electrical and integration subteam on multidisciplinary electric-vehicle development, with a focus on electrical hardware integration, circuit analysis, embedded systems, and hardware/software interfaces.</p></div>
         </article>
         <article className="timeline-item student-item">
-          <div className="timeline-date">STUDENT TEAM</div><div className="timeline-mark"><span/></div>
-          <div className="timeline-copy"><div className="eyebrow section-kicker">COMPETITIVE ROBOTICS</div><h2>VEXU Robotics</h2><h3>Virginia Tech</h3><p>Student robotics experience involving hardware and programming. Specific responsibilities and dates can be added when confirmed.</p></div>
+          <div className="timeline-date">AUG 2025<br/>— MAY 2026</div><div className="timeline-mark"><span/></div>
+          <div className="timeline-copy"><div className="eyebrow section-kicker">COMPETITIVE ROBOTICS</div><h2>VEX U Robotics</h2><h3>Electrical & Programming Team Member · Virginia Tech</h3><p>Contributed to electrical development and robot programming, working across robot electrical systems and hardware/software integration.</p></div>
         </article>
       </div>
     </section>

@@ -16,8 +16,9 @@ export function Layout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const slug = location.pathname.split('/').filter(Boolean).at(-1) ?? '';
-    const project = getProject(slug);
+    const path = location.pathname.replace(/\/+$/, '') || '/';
+    const slug = path.startsWith('/projects/') ? path.slice('/projects/'.length) : '';
+    const project = slug && !slug.includes('/') ? getProject(slug) : undefined;
     const pages: Record<string, [string, string]> = {
       '/': [`${profile.name} | Computer Engineering & Embedded Systems`, 'Portfolio of Raghav Sharma, a Virginia Tech Computer Engineering student working across embedded systems, FPGA design, robotics, computer vision, and software engineering.'],
       '/projects': [`Projects | ${profile.name}`, 'Engineering projects in computer vision, FPGA design, embedded systems, robotics, and software engineering.'],
@@ -26,12 +27,14 @@ export function Layout() {
     };
     const [title, description] = project
       ? [`${slug === 'vehicle-identification-ocr' ? 'Automated Vehicle Identification Using Computer Vision' : project.title} | ${profile.name}`, project.description]
-      : pages[location.pathname] ?? pages['/'];
+      : pages[path] ?? (path.startsWith('/projects/')
+        ? [`Project not found | ${profile.name}`, 'The requested project page could not be found. Browse the available engineering case studies.']
+        : [`Page not found | ${profile.name}`, 'The requested page could not be found. Return to the portfolio home page or browse the projects.']);
     document.title = title;
     document.querySelector('meta[name="description"]')?.setAttribute('content', description);
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -52,16 +55,6 @@ export function Layout() {
 
   useEffect(() => {
     const state = location.state as { scrollToResume?: boolean } | null;
-    if (location.pathname !== '/' || (!state?.scrollToResume && location.hash !== '#resume')) return;
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      navigate('/', { replace: true, state: null });
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [location.key, location.pathname, location.state, navigate]);
-
-  useEffect(() => {
-    const state = location.state as { scrollToResume?: boolean } | null;
     if (state?.scrollToResume || (location.pathname === '/' && location.hash === '#resume')) return;
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
@@ -70,7 +63,8 @@ export function Layout() {
     event.preventDefault();
     setOpen(false);
     if (location.pathname === '/') {
-      document.getElementById('resume')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+      document.getElementById('resume')?.scrollIntoView({ behavior, block: 'start' });
     } else {
       navigate('/', { state: { scrollToResume: true } });
     }
@@ -95,10 +89,11 @@ export function Layout() {
           <NavLink to="/projects" onClick={() => setOpen(false)}>Work</NavLink>
           <NavLink to="/experience" onClick={() => setOpen(false)}>Experience</NavLink>
           <NavLink to="/about" onClick={() => setOpen(false)}>About</NavLink>
+          {profile.github && <a href={profile.github} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14}/></a>}
           <a className="nav-resume" href="/#resume" onClick={handleResume}>Resume <ArrowUpRight size={14}/></a>
         </nav>
         <div className="header-actions">
-          <button className="icon-button theme-toggle" aria-label={`Switch to ${dark ? 'light' : 'dark'} theme`} onClick={toggleTheme}>{dark ? <Sun size={17}/> : <Moon size={17}/>}</button>
+          <button className="icon-button theme-toggle" aria-label={`Switch to ${dark ? 'light' : 'dark'} theme`} aria-pressed={dark} onClick={toggleTheme}>{dark ? <Sun size={17}/> : <Moon size={17}/>}</button>
           <button className="icon-button menu-toggle" aria-label={open ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={open} aria-controls="main-navigation" onClick={() => setOpen(!open)}>{open ? <X/> : <Menu/>}</button>
         </div>
       </div>
